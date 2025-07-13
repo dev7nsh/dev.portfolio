@@ -17,7 +17,7 @@ function App() {
           </span>
         </div>
 
-        <div className="absolute top-12 left-36 transform -translate-x-1/2">
+        <div className="absolute     k top-12 left-36 transform -translate-x-1/2">
 
 
        
