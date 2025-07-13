@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap');
+@import "tailwindcss";
+
+
+.fontt {
+  font-family: "Libertinus Mono", monospace;
+}
