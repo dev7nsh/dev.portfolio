@@ -135,7 +135,7 @@ Tools & Others:
 
 ┌─────────────────────────────────────────────────────────────────┐
 │ Email:    <a href="mailto:dev7nsh@email.com">dev7nsh@email.com</a>         │
-│ Phone:    <a href="tel:+916375131607">+91 6375131607</a>                   │
+│                                                                            │
 │ LinkedIn: <a href="https://www.linkedin.com/in/devansh-chouhan-795a7a28b/" target="_blank" rel="noopener noreferrer">linkedin.com/in/dev7nsh</a> │
 │ GitHub:   <a href="https://github.com/dev7nsh" target="_blank" rel="noopener noreferrer">github.com/dev7nsh</a> │
 │ insta:    <a href="https://instagram.com/dev7nsh" target="_blank" rel="noopener noreferrer">@dev7nsh</a> │
@@ -257,8 +257,8 @@ Type 'help' to see available commands.`;
     // Helper to animate output
     const typeOutput = (content, type = 'output') => {
       setIsTyping(true);
-      newLines.push({ type, content: '' });
-      setLines([...newLines]);
+      const newLines = [...lines, { type, content: '' }];
+      setLines(newLines);
       typeText(content, (typed) => {
         setLines((prev) => {
           const updated = [...prev];
