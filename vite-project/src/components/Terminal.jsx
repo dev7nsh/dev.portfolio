@@ -460,6 +460,16 @@ Type any command to explore my portfolio!`;
         </div>
       </div>
 
+      {/* Download CV Button at bottom left (desktop only) */}
+      <a
+        href="devanshchouhan.pdf"
+        download
+        className="hidden md:inline fixed bottom-4 left-4 z-50 bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded shadow transition-colors"
+        style={{ textDecoration: "none" }}
+      >
+        Download CV
+      </a>
+
       {/* Cursor blink animation */}
       <style jsx>{`
         @keyframes blink {
