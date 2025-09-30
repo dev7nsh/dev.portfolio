@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Terminal as TerminalIcon } from 'lucide-react';
+import { Terminal as TerminalIcon, Sun, Moon } from 'lucide-react';
 
-const Terminal = () => {
+const Terminal = ({ onThemeChange }) => {
   const [lines, setLines] = useState([]);
   const [currentInput, setCurrentInput] = useState('');
   const [commandHistory, setCommandHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [isTyping, setIsTyping] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
   const inputRef = useRef(null);
   const terminalRef = useRef(null);
 
@@ -22,19 +23,50 @@ const Terminal = () => {
     leadership: 'View leadership experience',
     sudo: 'Execute with admin privileges',
     clear: 'Clear the terminal',
-    welcome: 'Show welcome message'
+    welcome: 'Show welcome message',
+    theme: 'Toggle between dark and light theme'
   };
 
-  const portfolioData = {
-    about: `Hi, I'm Devansh Chouhan — a self-taught developer, crypto enthusiast, and content creator. I’m passionate about building web apps, exploring blockchain technologies, and sharing practical insights through my YouTube channel.
+  // Theme configurations
+  const themes = {
+    dark: {
+      bg: 'bg-black',
+      text: 'text-green-400',
+      accent: 'text-green-300',
+      error: 'text-red-400',
+      border: 'border-green-500',
+      headerBg: 'bg-gray-900',
+      buttonHover: 'hover:bg-green-800 hover:text-white',
+      buttonBorder: 'border-green-600',
+      downloadBtn: 'bg-green-700 hover:bg-green-800 text-white',
+      inputCaret: '#4ade80'
+    },
+    light: {
+      bg: 'bg-white',
+      text: 'text-gray-800',
+      accent: 'text-blue-600',
+      error: 'text-red-600',
+      border: 'border-gray-300',
+      headerBg: 'bg-gray-100',
+      buttonHover: 'hover:bg-blue-100 hover:text-blue-800',
+      buttonBorder: 'border-gray-400',
+      downloadBtn: 'bg-blue-600 hover:bg-blue-700 text-white',
+      inputCaret: '#2563eb'
+    }
+  };
 
-My tech stack includes MERN, TailwindCSS, Docker, and Linux-based deployment environments. I enjoy getting my hands dirty with real-world challenges, whether it’s deploying full-stack apps using NGINX and containers or exploring decentralized applications and airdrop strategies.
+  const currentTheme = isDarkTheme ? themes.dark : themes.light;
+
+  const portfolioData = {
+    about: `Hi, I'm Devansh Chouhan — a self-taught developer, crypto enthusiast, and content creator. I'm passionate about building web apps, exploring blockchain technologies, and sharing practical insights through my YouTube channel.
+
+My tech stack includes MERN, TailwindCSS, Docker, and Linux-based deployment environments. I enjoy getting my hands dirty with real-world challenges, whether it's deploying full-stack apps using NGINX and containers or exploring decentralized applications and airdrop strategies.
 
 Currently, I'm diving deeper into frontend engineering, while also documenting my crypto journey — especially around node running, infrastructure tools, and monetization models in the Web3 space.
 
-When I’m not coding or researching crypto trends, you’ll find me involved in yoga, dance, or working on leveling up my communication skills.
+When I'm not coding or researching crypto trends, you'll find me involved in yoga, dance, or working on leveling up my communication skills.
 
-Let’s build, break, and innovate together.`,
+Let's build, break, and innovate together.`,
 
     projects: `🚀 Featured Projects:
 
@@ -243,6 +275,14 @@ Type 'help' to see available commands.`;
     return new Date().toLocaleString();
   };
 
+  const toggleTheme = () => {
+    const newTheme = !isDarkTheme;
+    setIsDarkTheme(newTheme);
+    if (onThemeChange) {
+      onThemeChange(newTheme);
+    }
+  };
+
   const executeCommand = (command) => {
     const cmd = command.toLowerCase().trim();
     const newLines = [...lines];
@@ -278,6 +318,11 @@ ${Object.entries(commands).map(([cmd, desc]) =>
 
 Type any command to explore my portfolio!`;
         typeOutput(helpText);
+        break;
+
+      case 'theme':
+        toggleTheme();
+        typeOutput(`Theme switched to ${isDarkTheme ? 'light' : 'dark'} mode! 🎨`);
         break;
 
       case 'about':
@@ -391,14 +436,14 @@ Type any command to explore my portfolio!`;
   };
 
   return (
-    <div className="overflow-hidden min-h-screen bg-black text-green-400 font-mono text-sm sm:text-base">
+    <div className={`overflow-hidden min-h-screen ${currentTheme.bg} ${currentTheme.text} font-mono text-sm sm:text-base`}>
       {/* Command suggestions bar */}
-      <div className="bg-gray-900 border-b border-green-500 p-2 sm:p-2 text-sm sm:text-base">
-        <div className="flex flex-wrap gap-2 sm:gap-0">
-          {Object.keys(commands).map(cmd => (
+      <div className={`${currentTheme.headerBg} ${currentTheme.border} border-b p-2 sm:p-2 text-sm sm:text-base flex justify-between items-center`}>
+        <div className="flex flex-wrap gap-2 sm:gap-0 flex-1">
+          {Object.keys(commands).slice(0, -1).map(cmd => (
             <button
               key={cmd}
-              className="px-2 py-1 sm:px-3 sm:py-1.5 text-green-400 rounded hover:bg-green-800 hover:text-white transition-colors duration-100 text-sm sm:text-base border border-green-600 md:border-none"
+              className={`px-2 py-1 sm:px-3 sm:py-1.5 ${currentTheme.text} rounded ${currentTheme.buttonHover} transition-colors duration-100 text-sm sm:text-base border ${currentTheme.buttonBorder} md:border-none`}
               onClick={() => {
                 if (!isTyping) executeCommand(cmd);
               }}
@@ -411,6 +456,15 @@ Type any command to explore my portfolio!`;
             </button>
           ))}
         </div>
+        
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          className={`ml-4 p-2 rounded-full ${currentTheme.buttonHover} transition-colors duration-200 border ${currentTheme.buttonBorder}`}
+          aria-label="Toggle theme"
+        >
+          {isDarkTheme ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
       </div>
 
       {/* Terminal content */}
@@ -422,7 +476,7 @@ Type any command to explore my portfolio!`;
         {/* Terminal header */}
         <div className="mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
           <TerminalIcon size={20} />
-          <span className="text-green-300 text-sm sm:text-base">Terminal Portfolio v1.0</span>
+          <span className={`${currentTheme.accent} text-sm sm:text-base`}>Terminal Portfolio v1.0</span>
           <span className="text-gray-500 ml-auto text-[13px] sm:text-base">
             {getTimestamp()}
           </span>
@@ -433,11 +487,11 @@ Type any command to explore my portfolio!`;
           {lines.map((line, index) => (
             <div key={index} className="whitespace-pre-wrap ">
               {line.type === 'input' ? (
-                <div className="text-green-300">{line.content}</div>
+                <div className={currentTheme.accent}>{line.content}</div>
               ) : line.type === 'error' ? (
-                <div className="text-red-400">{line.content}</div>
+                <div className={currentTheme.error}>{line.content}</div>
               ) : (
-                <div className="text-green-400" dangerouslySetInnerHTML={{ __html: line.content }} />
+                <div className={currentTheme.text} dangerouslySetInnerHTML={{ __html: line.content }} />
               )}
             </div>
           ))}
@@ -445,17 +499,20 @@ Type any command to explore my portfolio!`;
 
         {/* Current input line */}
         <div className="flex items-center mt-4 sm:mt-6">
-          <span className="text-green-300 mr-3 text-sm sm:text-base">Dev@portfolio:~$</span>
+          <span className={`${currentTheme.accent} mr-3 text-sm sm:text-base`}>Dev@portfolio:~$</span>
           <input
             ref={inputRef}
             type="text"
             value={currentInput}
             onChange={(e) => setCurrentInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent border-none outline-none text-green-400 caret-green-400 text-sm sm:text-base"
+            className={`flex-1 bg-transparent border-none outline-none ${currentTheme.text} text-sm sm:text-base`}
             placeholder="Type a command..."
             autoFocus
             disabled={isTyping}
+            style={{ 
+              caretColor: currentTheme.inputCaret
+            }}
           />
         </div>
       </div>
@@ -464,7 +521,7 @@ Type any command to explore my portfolio!`;
       <a
         href="devanshchouhan.pdf"
         download
-        className="hidden md:inline fixed bottom-4 left-4 z-50 bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded shadow transition-colors"
+        className={`hidden md:inline fixed bottom-4 left-4 z-50 ${currentTheme.downloadBtn} font-bold py-2 px-4 rounded shadow transition-colors`}
         style={{ textDecoration: "none" }}
       >
         Download CV

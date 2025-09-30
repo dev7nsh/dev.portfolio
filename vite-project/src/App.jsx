@@ -6,14 +6,15 @@ import { Flower2 } from "lucide-react";
 
 function App() {
   const [showMobileOverlay, setShowMobileOverlay] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
 
   return (
     <>
       {/* Mobile Overlay */}
       {showMobileOverlay && (
-        <div className=" fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 md:hidden">
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 md:hidden">
           <img
-            src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YWF4NWp0dHVzZTB2em5nNzl0eGh2ZDljcjBsbW0zNWpsbm9obngxdiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/MSemvqMIRY3jMcvpd2/giphy.gif"
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2R2d2Z2b2J0b3J3b3Z2d2Z2b2J0b3J3b3Z2d2Z2b2J0b3J3/giphy.gif"
             alt="Mobile Experience"
             className="w-32 h-32 mb-6 rounded-lg"
           />
@@ -31,26 +32,26 @@ function App() {
         </div>
       )}
 
-      <div className=" border-r  border-green-500  h-screen bg-black flex flex-col md:flex-row overflow-auto md:border-r-0">
+      <div className={`border-r ${isDarkTheme ? 'border-green-500 bg-black' : 'border-gray-300 bg-white'} h-screen flex flex-col md:flex-row overflow-auto md:border-r-0`}>
         {/* Left Side - Hidden on mobile */}
         <div className="hidden md:flex md:w-2/5 relative overflow-hidden">
-          <Card />
+          <Card isDarkTheme={isDarkTheme} />
 
           <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
-            <span className="text-green-400 text-[10px] font-mono">
+            <span className={`${isDarkTheme ? 'text-green-400' : 'text-blue-600'} text-[10px] font-mono`}>
               [Play with the 3D card!]
             </span>
           </div>
 
-          <div className="absolute  text-left   top-12 left-28 transform -translate-x-1/2">
-            <h1 className=" fontt text-3xl font-extrabold text-green-400 mb-2 " >ChouhanDev</h1> 
-            <p className="text-gray-400 text-lg ">Software Engineer</p>
+          <div className="absolute text-left top-12 left-28 transform -translate-x-1/2">
+            <h1 className={`fontt text-3xl font-extrabold ${isDarkTheme ? 'text-green-400' : 'text-blue-600'} mb-2`}>ChouhanDev</h1> 
+            <p className={`${isDarkTheme ? 'text-gray-400' : 'text-gray-600'} text-lg`}>Software Engineer</p>
           </div>
         </div>
 
         {/* Right Side - Terminal (visible on all screens) */}
-        <div className=" w-full md:w-3/5 border-l border-green-500 overflow-hidden">
-          <Terminal />
+        <div className={`w-full md:w-3/5 border-l ${isDarkTheme ? 'border-green-500' : 'border-gray-300'} overflow-hidden`}>
+          <Terminal onThemeChange={setIsDarkTheme} />
         </div>
       </div>
     </>

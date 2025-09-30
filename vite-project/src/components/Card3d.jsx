@@ -16,57 +16,83 @@ import {
   useSphericalJoint,
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
-import { useControls } from "leva";
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 useGLTF.preload("/devcard.glb");
 useTexture.preload("/band.png");
 
-export default function Card() {
+export default function Card({ isDarkTheme = true }) {
   return (
     <Canvas camera={{ position: [0, 0, 13], fov: 25 }}>
-      <ambientLight intensity={Math.PI} />
+      <ambientLight intensity={isDarkTheme ? Math.PI : Math.PI * 1.5} />
       <Physics interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
-        <Band />
+        <Band  />
       </Physics>
       <Environment background blur={0.75}>
-        <color attach="background" args={["black"]} />
+        <color attach="background" args={["black", "white"]} />
         <Lightformer
-          intensity={2}
-          color="white"
+          intensity={ 3}
+          color={"#f0f0f0"}
           position={[0, -1, 5]}
           rotation={[0, 0, Math.PI / 3]}
           scale={[100, 0.1, 1]}
         />
         <Lightformer
-          intensity={3}
-          color="white"
+          intensity={4}
+          color={"#e8e8e8"}
           position={[-1, -1, 1]}
           rotation={[0, 0, Math.PI / 3]}
           scale={[100, 0.1, 1]}
         />
         <Lightformer
-          intensity={3}
-          color="white"
+          intensity={4}
+          color={"#e8e8e8"}
           position={[1, 1, 1]}
           rotation={[0, 0, Math.PI / 3]}
           scale={[100, 0.1, 1]}
         />
         <Lightformer
-          intensity={10}
-          color="white"
+          intensity={ 15}
+          color={ "#f5f5f5"}
           position={[-10, 0, 14]}
           rotation={[0, Math.PI / 2, Math.PI / 3]}
           scale={[100, 10, 1]}
         />
+        {/* Additional lighting for white theme */}
+        {!isDarkTheme && (
+          <>
+            <Lightformer
+              intensity={0}
+              color="#f8f8f8"
+              position={[10, 5, 10]}
+              rotation={[0, 0, 0]}
+              scale={[50, 50, 1]}
+            />
+            <Lightformer
+              intensity={4}
+              color="#ffffff"
+              position={[0, 10, 0]}
+              rotation={[Math.PI / 2, 0, 0]}
+              scale={[100, 100, 1]}
+            />
+          </>
+        )}
       </Environment>
     </Canvas>
   );
 }
 
-function Band({ maxSpeed = 50, minSpeed = 10 }) {
-  const band = useRef(), fixed = useRef(), j1 = useRef(), j2 = useRef(), j3 = useRef(), card = useRef() // prettier-ignore
-  const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3() // prettier-ignore
+function Band({ maxSpeed = 50, minSpeed = 10, isDarkTheme = false }) {
+  const band = useRef(),
+    fixed = useRef(),
+    j1 = useRef(),
+    j2 = useRef(),
+    j3 = useRef(),
+    card = useRef(); // prettier-ignore
+  const vec = new THREE.Vector3(),
+    ang = new THREE.Vector3(),
+    rot = new THREE.Vector3(),
+    dir = new THREE.Vector3(); // prettier-ignore
   const segmentProps = {
     type: "dynamic",
     canSleep: true,
@@ -89,10 +115,10 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
 
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]) // prettier-ignore
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]) // prettier-ignore
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]) // prettier-ignore
-  useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.45, 0]]) // prettier-ignore
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]); // prettier-ignore
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]); // prettier-ignore
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]); // prettier-ignore
+  useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.45, 0]]); // prettier-ignore
 
   useEffect(() => {
     if (hovered) {
@@ -188,29 +214,38 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
                 map-anisotropy={16}
                 clearcoat={1}
                 clearcoatRoughness={0.15}
-                roughness={0.3}
-                metalness={0.5}
+                roughness={0.2}
+                metalness={0.3}
+                envMapIntensity={1.5}
               />
             </mesh>
             <mesh
               geometry={nodes.clip.geometry}
               material={materials.metal}
-              material-roughness={0.3}
+              material-roughness={0.2}
+              material-metalness={0.8}
             />
-            <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
+            <mesh
+              geometry={nodes.clamp.geometry}
+              material={materials.metal}
+              material-roughness={0.2}
+              material-metalness={0.8}
+            />
           </group>
         </RigidBody>
       </group>
       <mesh ref={band}>
         <meshLineGeometry />
         <meshLineMaterial
-          color="white"
+          color={isDarkTheme ? "white" : "#333333"}
           depthTest={false}
           resolution={[width, height]}
           useMap
           map={texture}
           repeat={[-3, 1]}
           lineWidth={1}
+          opacity={0.8}
+          transparent={1}
         />
       </mesh>
     </>
