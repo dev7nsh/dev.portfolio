@@ -30,24 +30,24 @@ const Terminal = ({ onThemeChange }) => {
   // Theme configurations
   const themes = {
     dark: {
-      bg: 'bg-black',
-      text: 'text-green-400',
-      accent: 'text-green-300',
-      error: 'text-red-400',
-      border: 'border-green-500',
-      headerBg: 'bg-gray-900',
-      buttonHover: 'hover:bg-green-800 hover:text-white',
-      buttonBorder: 'border-green-600',
-      downloadBtn: 'bg-green-700 hover:bg-green-800 text-white',
-      inputCaret: '#4ade80'
+      bg: 'bg-[#1e1e1e]',
+      text: 'text-[#d4d4d4]',
+      accent: 'text-[#569cd6]',
+      error: 'text-[#f44747]',
+      border: 'border-[#3c3c3c]',
+      headerBg: 'bg-[#2d2d30]',
+      buttonHover: 'hover:bg-[#094771] hover:text-[#cccccc]',
+      buttonBorder: 'border-[#3c3c3c]',
+      downloadBtn: 'bg-[#0e639c] hover:bg-[#1177bb] text-white',
+      inputCaret: '#569cd6'
     },
     light: {
-      bg: 'bg-white',
+      bg: 'bg-gray-100',
       text: 'text-gray-800',
       accent: 'text-blue-600',
       error: 'text-red-600',
       border: 'border-gray-300',
-      headerBg: 'bg-gray-100',
+      headerBg: 'bg-gray-200',
       buttonHover: 'hover:bg-blue-100 hover:text-blue-800',
       buttonBorder: 'border-gray-400',
       downloadBtn: 'bg-blue-600 hover:bg-blue-700 text-white',
