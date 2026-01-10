@@ -14,7 +14,7 @@ function App() {
       {showMobileOverlay && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 md:hidden">
           <img
-            src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YWF4NWp0dHVzZTB2em5nNzl0eGh2ZDljcjBsbW0zNWpsbm9obngxdiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/MSemvqMIRY3jMcvpd2/giphy.gif"
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2R2d2Z2b2J0b3J3b3Z2d2Z2b2J0b3J3b3Z2d2Z2b2J0b3J3/giphy.gif"
             alt="Mobile Experience"
             className="w-32 h-32 mb-6 rounded-lg"
           />
