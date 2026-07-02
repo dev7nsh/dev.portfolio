@@ -5,3 +5,60 @@
 .fontt {
   font-family: "Libertinus Mono", monospace;
 }
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes cardReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes borderSpin {
+  to { --border-angle: 360deg; }
+}
+
+.card-animate {
+  animation: cardReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, borderSpin 4s 0.4s linear infinite;
+  opacity: 0;
+}
+
+.card-hover {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  position: relative;
+  border: 1px solid rgba(74, 222, 128, 0.25) !important;
+}
+
+.card-hover:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 18px rgba(74, 222, 128, 0.25), 0 4px 16px rgba(0,0,0,0.4);
+  border-color: rgba(74, 222, 128, 0.6) !important;
+}
+
+.project-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #aaa;
+  text-decoration: none;
+  font-size: 0.8em;
+  padding: 4px 8px;
+  border: 1px solid rgba(128,128,128,0.2);
+  border-radius: 4px;
+  background: rgba(128,128,128,0.05);
+  transition: all 0.2s ease;
+}
+.project-link:hover {
+  background: rgba(128,128,128,0.15);
+  color: #fff;
+  border-color: rgba(128,128,128,0.4);
+}

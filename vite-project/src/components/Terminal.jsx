@@ -10,6 +10,7 @@ const Terminal = ({ onThemeChange }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(true);
   const inputRef = useRef(null);
   const terminalRef = useRef(null);
+  const typingIdRef = useRef(0);
 
   const commands = {
     help: 'Display available commands',
@@ -58,44 +59,47 @@ const Terminal = ({ onThemeChange }) => {
   const currentTheme = isDarkTheme ? themes.dark : themes.light;
 
   const portfolioData = {
-    about: `Hi, I'm Devansh Chouhan — a self-taught developer, crypto enthusiast, and content creator. I'm passionate about building web apps, exploring blockchain technologies, and sharing practical insights through my YouTube channel.
+    about: `👋 Hey, I'm Devansh Chouhan.
 
-My tech stack includes MERN, TailwindCSS, Docker, and Linux-based deployment environments. I enjoy getting my hands dirty with real-world challenges, whether it's deploying full-stack apps using NGINX and containers or exploring decentralized applications and airdrop strategies.
+I'm a self-taught developer who builds things that actually matter.
 
-Currently, I'm diving deeper into frontend engineering, while also documenting my crypto journey — especially around node running, infrastructure tools, and monetization models in the Web3 space.
+Currently shipping two personal projects I'm deeply invested in:
 
-When I'm not coding or researching crypto trends, you'll find me involved in yoga, dance, or working on leveling up my communication skills.
+  ⚙️  DevOpsBy       — A DevOps consultancy I founded, helping teams
+                        tame Kubernetes, automate CI/CD pipelines, and
+                        harden cloud infrastructure. Built from scratch,
+                        run solo, and growing.
 
-Let's build, break, and innovate together.`,
+  🥗  FitHit.app     — An AI-powered nutrition tracker I built solo for
+                        iOS, Android & Web. Point your camera at food and
+                        get instant macro & micronutrient breakdowns.
+                        Powered by Gemini API + React Native + Next.js.
 
-    projects: `🚀 Featured Projects:
+─────────────────────────────────────────────────────────
 
-┌────────────────────────────────────────────────────────────────────────────┐
-│ 1. P2P USDT to INR Trading Platform                                        │ 
-│ Technologies: Node.js, Express, WebSockets, MongoDB                        │
-│ Description: Peer-to-peer crypto exchange for USDT ↔ INR with chat         │
-│ Status: ✅ Live on GitHub                                                  │
-│ GitHub: <a href="https://github.com/dev7nsh/p2p" target="_blank" rel="noopener noreferrer">github.com/dev7nsh/p2p</a>           │
-└────────────────────────────────────────────────────────────────────────────┘
+What drives me isn't the tech stack — it's the problem.
 
-┌────────────────────────────────────────────────────────────────────────┐
-│ 2. Email Collector Tool                                                │
-│ Technologies: Puppeteer, Node.js, JavaScript                           │
-│ Description: Scrapes public websites to extract email addresses        │
-│ Status: ✅ Active                                                      │
-│ GitHub: <a href="https://github.com/dev7nsh/emailcollecter" target="_blank" rel="noopener noreferrer">github.com/dev7nsh/emailcollecter</a> │
-│ Website: <a href="https://emailcollecter.onrender.com/" target="_blank" rel="noopener noreferrer">emailcollecter.onrender.com</a> │
-└────────────────────────────────────────────────────────────────────────┘
+I write code because I want things to exist that don't yet.
+I automate infrastructure because manual is a liability.
+I ship apps because ideas without execution are just thoughts.
 
-┌────────────────────────────────────────────────────────────────────────────┐
-│ 3. Secure Auth & Role-based Access System                                  │
-│ Technologies: React, Node.js, JWT, MongoDB                                 │ 
-│ Description: Auth app with login, signup, and protected role access        │
-│ Status: 🔄 In Development                                                  │
-│ GitHub: <a href="https://github.com/dev7nsh/auth-app" target="_blank" rel="noopener noreferrer">github.com/dev7nsh/auth-app</a> │
-└────────────────────────────────────────────────────────────────────────────┘
+I'm obsessed with: shipping fast, learning in public,
+and building systems that survive the real world —
+not just demo environments.
 
-Type 'contact' to collaborate or learn more! `,
+─────────────────────────────────────────────────────────
+
+Stack I reach for:  React · Next.js · Node.js · TypeScript
+                    Kubernetes · Docker · CI/CD · Supabase
+                    React Native · Solidity · Linux · Nginx
+
+─────────────────────────────────────────────────────────
+
+💬  Let's build something that solves a real problem.
+    Type 'projects' to see what I've shipped.
+    Type 'contact'  to reach out.`,
+
+    projects: `<div style="font-family:monospace;"><div style="margin-bottom:12px;font-size:1em;color:#4ade80;">🚀 Featured Projects:</div><div style="display:grid;grid-template-columns:1fr;gap:12px;max-width:600px;"><div class="card-animate card-hover" style="animation-delay:0.1s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1px solid rgba(128,128,128,0.2);background:rgba(128,128,128,0.05);"><div style="background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:0.85em;font-weight:700;">App</span><span style="width:1px;height:20px;background:rgba(255,255,255,0.5);margin:0 6px;display:inline-block;"></span><span style="color:#fff;font-size:1em;font-weight:900;">FIT</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:4px;">FitHit.app</div><div style="color:gray;font-size:0.75em;line-height:1.4;margin-bottom:10px;">AI-powered nutrition tracking app that analyzes food from a photo and provides instant macro and micronutrient breakdown. Built solo for iOS, Android, and Web using React Native, Next.js, and Gemini API.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://fithit.app" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg><span>Live</span></a><a href="https://lnkd.in/gkUvjfg2" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span>Notion</span></a><a href="https://www.linkedin.com/feed/update/urn:li:activity:7471066623056060416" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>Post</span></a></div></div></div><div class="card-animate card-hover" style="animation-delay:0.15s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1px solid rgba(128,128,128,0.2);background:rgba(128,128,128,0.05);"><div style="background:linear-gradient(135deg,#00c6ff 0%,#0072ff 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:0.85em;font-weight:700;">Cloud</span><span style="width:1px;height:20px;background:rgba(255,255,255,0.5);margin:0 6px;display:inline-block;"></span><span style="color:#fff;font-size:1em;font-weight:900;">OPS</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:4px;">DevOpsBy</div><div style="color:gray;font-size:0.75em;line-height:1.4;margin-bottom:10px;">DevOps consultancy focused on Kubernetes, CI/CD, infrastructure automation, cloud optimization, monitoring, security, and Web3 validator infrastructure.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://devopsby.me" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg><span>Live</span></a><a href="https://app.notion.com/p/chouhan/DevopsBY-391d334e18a68048ba09c4486cba893e?source=copy_link" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span>Notion</span></a><a href="https://www.linkedin.com/feed/update/urn:li:activity:7414947296003575808" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>Post</span></a></div></div></div><div class="card-animate card-hover" style="animation-delay:0.2s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1px solid rgba(128,128,128,0.2);background:rgba(128,128,128,0.05);"><div style="background:linear-gradient(135deg,#f12711 0%,#f5af19 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:0.85em;font-weight:700;">SIH</span><span style="width:1px;height:20px;background:rgba(255,255,255,0.5);margin:0 6px;display:inline-block;"></span><span style="color:#fff;font-size:1em;font-weight:900;">2025</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:4px;">Smart India Hackathon 2025</div><div style="color:gray;font-size:0.75em;line-height:1.4;margin-bottom:10px;">AI and Blockchain-based Deep Fake Detection System developed for Smart India Hackathon 2025 under the Blockchain & Cybersecurity theme.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://developby.me" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg><span>Live</span></a><a href="https://www.linkedin.com/posts/devanshchouhan_sih-smartindiahackthon-activity-7381632569567670272-pU2z" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>Post</span></a></div></div></div><div class="card-animate card-hover" style="animation-delay:0.25s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1px solid rgba(128,128,128,0.2);background:rgba(128,128,128,0.05);"><div style="background:linear-gradient(135deg,#8E2DE2 0%,#4A00E0 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:0.85em;font-weight:700;">Web3</span><span style="width:1px;height:20px;background:rgba(255,255,255,0.5);margin:0 6px;display:inline-block;"></span><span style="color:#fff;font-size:1em;font-weight:900;">DAPP</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:4px;">Web3 Counter dApp</div><div style="color:gray;font-size:0.75em;line-height:1.4;margin-bottom:10px;">First Solidity smart contract and Web3 dApp featuring wallet integration, on-chain transactions, and a decentralized counter built with React and Thirdweb SDK.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://dapp.chouhan.me" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg><span>Live</span></a><a href="https://lnkd.in/eigawZmc" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span>GitHub</span></a><a href="https://lnkd.in/eKBZppm9" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span>Notion</span></a><a href="https://www.linkedin.com/posts/devanshchouhan_web3-blockchain-solidity-activity-7435303949685059584--6hN" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>Post</span></a></div></div></div><div class="card-animate card-hover" style="animation-delay:0.3s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1px solid rgba(128,128,128,0.2);background:rgba(128,128,128,0.05);"><div style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:0.85em;font-weight:700;">K8s</span><span style="width:1px;height:20px;background:rgba(255,255,255,0.5);margin:0 6px;display:inline-block;"></span><span style="color:#fff;font-size:1em;font-weight:900;">VOTE</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:4px;">K8s Kind Voting App</div><div style="color:gray;font-size:0.75em;line-height:1.4;margin-bottom:10px;">GitOps-based Kubernetes deployment using Kind, Argo CD, Docker, and AWS EC2 with automated CI/CD pipelines and Kubernetes Dashboard.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://lnkd.in/gF4Xmhfz" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span>GitHub</span></a><a href="https://lnkd.in/gRQDbYEV" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span>Notion</span></a><a href="https://www.linkedin.com/posts/devanshchouhan_kubernetes-devops-argocd-activity-7381594306475864065-B-pB" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>Post</span></a></div></div></div><div class="card-animate card-hover" style="animation-delay:0.35s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1px solid rgba(128,128,128,0.2);background:rgba(128,128,128,0.05);"><div style="background:linear-gradient(135deg,#1d976c 0%,#93f9b9 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:0.85em;font-weight:700;">K8s</span><span style="width:1px;height:20px;background:rgba(255,255,255,0.5);margin:0 6px;display:inline-block;"></span><span style="color:#fff;font-size:1em;font-weight:900;">CHAT</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:4px;">Kubernetes Full Stack Chat App</div><div style="color:gray;font-size:0.75em;line-height:1.4;margin-bottom:10px;">Three-tier React, Node.js, and MongoDB application deployed on Kubernetes with extensive debugging of deployments, services, labels, networking, and Docker containers.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://lnkd.in/gHJt_UWY" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span>GitHub</span></a><a href="https://www.linkedin.com/posts/devanshchouhan_kubernetes-docker-devops-activity-7380900181996871680-9PI9" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>Post</span></a></div></div></div><div class="card-animate card-hover" style="animation-delay:0.4s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1px solid rgba(128,128,128,0.2);background:rgba(128,128,128,0.05);"><div style="background:linear-gradient(135deg,#e55d87 0%,#5fc3e4 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:0.85em;font-weight:700;">Dev</span><span style="width:1px;height:20px;background:rgba(255,255,255,0.5);margin:0 6px;display:inline-block;"></span><span style="color:#fff;font-size:1em;font-weight:900;">MAIL</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:4px;">Email Scraper</div><div style="color:gray;font-size:0.75em;line-height:1.4;margin-bottom:10px;">Full-stack React and Node.js application that collects emails, stores them in MongoDB, and provides real-time frontend updates with a clean UI.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://lnkd.in/g4vACWYu" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg><span>Live</span></a><a href="https://www.linkedin.com/posts/devanshchouhan_reactjs-nodejs-mongodb-activity-7346233321263177728-2R6X" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>Post</span></a></div></div></div><div class="card-animate card-hover" style="animation-delay:0.45s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1px solid rgba(128,128,128,0.2);background:rgba(128,128,128,0.05);"><div style="background:linear-gradient(135deg,#f7971e 0%,#ffd200 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:0.85em;font-weight:700;">Hack</span><span style="width:1px;height:20px;background:rgba(255,255,255,0.5);margin:0 6px;display:inline-block;"></span><span style="color:#fff;font-size:1em;font-weight:900;">BOOK</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:4px;">Event Booking Platform</div><div style="color:gray;font-size:0.75em;line-height:1.4;margin-bottom:10px;">Hackathon project that secured 2nd place. Built an event booking platform where users can register for events and receive instant email tickets. Developed using Next.js, TypeScript, Supabase, Nodemailer, and CSS.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://lnkd.in/gRnpvNgv" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg><span>Live</span></a><a href="https://lnkd.in/gUpxriF2" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span>GitHub</span></a></div></div></div></div><div style="margin-top:14px;color:#888;font-size:0.85em;">Type 'contact' to collaborate or learn more!</div></div>`,
 
     skills: `💻 TECHNICAL SKILLS
 
@@ -132,13 +136,13 @@ Tools & Others:
     experience: `
     
         ┌──────────────────────────────────────────────────────────────────────┐
-        │ Blockchain Developer Intern                                          │
-        │ 2023 – Present                                                       │
+        │ Independent Developer & Founder                                      │
+        │ Dec 2025 – Present                                                   │
         │                                                                      │
-        │ • Assisted in the development of a peer-to-peer USDT ↔ INR platform │
-        │ • Supported frontend and backend integration with Web3 wallets       │
-        │ • Contributed to dashboard tools for node rewards and airdrops       │
-        │ • Stack: Node.js, React, Web3.js, MongoDB, Socket.io                 │
+        │ • Architecting and scaling DevOpsBy and FitHit.app personal projects │
+        │ • Focused on production-level deployments and real-world solving     │
+        │ • Managing full lifecycle from backend systems to UI/UX and CI/CD    │
+        │ • Stack: Next.js, React Native, Kubernetes, Supabase, Gemini API     │
         └──────────────────────────────────────────────────────────────────────┘
 
         ┌────────────────────────────────────────────────────────────────────┐
@@ -215,24 +219,7 @@ Let's connect and discuss exciting opportunities!`,
   • edX: MIT Introduction to Computational Thinking
   • Udacity: Self-Driving Car Engineer Nanodegree`,
 
-    leadership: `👥 Leadership Experience:
-
-┌────────────────────────────────────────────────────────────────────────┐
-│ Head Boy - Student Leadership                                          │
-│ School Leadership Role (2022)                                          │
-│                                                                        │
-│ • Led the student council and served as the primary student liaison    │
-│ • Organized and managed major school fests (cultural & technical)      │
-│ • Delivered addresses during assemblies and public events              │
-│ • Fostered teamwork, discipline, and peer mentorship                   │
-└────────────────────────────────────────────────────────────────────────┘
-
-
-🎯 Leadership Philosophy:
-  • Empowering team members to reach their potential
-  • Fostering a culture of continuous learning
-  • Leading by example through code quality
-  • Building inclusive and diverse teams`
+    leadership: `<div style="font-family:monospace;"><div style="margin-bottom:12px;font-size:1em;color:#4ade80;">👥 Leadership Experience:</div><div style="display:grid;grid-template-columns:1fr;gap:12px;max-width:600px;"><div class="card-animate card-hover" style="animation-delay:0.1s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;"><div style="background:linear-gradient(135deg,#f7971e 0%,#ffd200 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;flex-direction:column;gap:4px;padding:12px;"><span style="color:#fff;font-size:0.75em;font-weight:700;text-align:center;">HACK</span><span style="color:#fff;font-size:0.9em;font-weight:900;text-align:center;">2nd Place</span><span style="color:rgba(255,255,255,0.8);font-size:0.65em;text-align:center;">Team Lead</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:6px;">Hackathon Team Lead — 2nd Place</div><div style="color:gray;font-size:0.75em;line-height:1.5;margin-bottom:10px;">Led a three-member team during the Fullstack Faceoff hackathon, coordinating development, feature planning, and project delivery under tight deadlines. Built an event booking platform with instant email ticket generation using Next.js, TypeScript, Supabase, and Nodemailer.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://www.linkedin.com/posts/devanshchouhan_buildinpublic-fullstackdev-hackathonlife-activity-7446820328166821888-jrre" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>LinkedIn Post</span></a></div></div></div><div class="card-animate card-hover" style="animation-delay:0.15s;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;"><div style="background:linear-gradient(135deg,#f12711 0%,#f5af19 100%);width:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0;flex-direction:column;gap:4px;padding:12px;"><span style="color:#fff;font-size:0.75em;font-weight:700;text-align:center;">SIH</span><span style="color:#fff;font-size:0.9em;font-weight:900;text-align:center;">Top 1%</span><span style="color:rgba(255,255,255,0.8);font-size:0.65em;text-align:center;">Team Lead</span></div><div style="padding:12px 16px;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:0.9em;font-weight:bold;margin-bottom:6px;">Smart India Hackathon 2025 Team Leadership</div><div style="color:gray;font-size:0.75em;line-height:1.5;margin-bottom:10px;">Coordinated a multidisciplinary team through ideation, planning, and development for Smart India Hackathon 2025. Guided collaboration, task execution, and technical discussions, helping the team advance to the top 1% nationwide and qualify for the next stage.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://www.linkedin.com/posts/devanshchouhan_sih2025-smartindiahackathon-top1percent-activity-7400197533735686144-Cfwz" target="_blank" rel="noopener noreferrer" class="project-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>LinkedIn Post</span></a></div></div></div></div><div style="margin-top:14px;color:#888;font-size:0.85em;">Type 'contact' to connect or collaborate!</div></div>`
   };
 
   useEffect(() => {
@@ -240,9 +227,13 @@ Let's connect and discuss exciting opportunities!`,
     const welcomeMessage = `Welcome to my interactive 'AI powered' portfolio terminal!
 Type 'help' to see available commands.`;
 
+    const executionId = ++typingIdRef.current;
+    setIsTyping(true);
     setLines([{ type: 'output', content: '' }]);
     typeText(welcomeMessage, (typed) => {
       setLines([{ type: 'output', content: typed }]);
+    }, () => executionId !== typingIdRef.current).then(() => {
+      if (executionId === typingIdRef.current) setIsTyping(false);
     });
   }, []);
 
@@ -261,14 +252,15 @@ Type 'help' to see available commands.`;
   }, []);
 
   // Typing animation helper
-  const typeText = async (text, cb, speed = 0.1) => {
+  const typeText = async (text, cb, shouldAbort = () => false, speed = 0.1) => {
     let out = '';
     for (let i = 0; i < text.length; i++) {
+      if (shouldAbort()) break;
       out += text[i];
       cb(out + (i % 2 === 0 ? '|' : '')); // blinking cursor effect
       await new Promise(res => setTimeout(res, speed));
     }
-    cb(out);
+    if (!shouldAbort()) cb(out);
   };
 
   const getTimestamp = () => {
@@ -285,19 +277,20 @@ Type 'help' to see available commands.`;
 
   const executeCommand = (command) => {
     const cmd = command.toLowerCase().trim();
-    const newLines = [...lines];
-
-    // Add the command to history
-    newLines.push({
+    
+    // Clear previous commands and show only current input
+    const baseLines = [{
       type: 'input',
       content: `Dev@portfolio:~$ ${command}`,
       timestamp: getTimestamp()
-    });
+    }];
+
+    const executionId = ++typingIdRef.current;
 
     // Helper to animate output
     const typeOutput = (content, type = 'output') => {
       setIsTyping(true);
-      const newLines = [...lines, { type, content: '' }];
+      const newLines = [...baseLines, { type, content: '' }];
       setLines(newLines);
       typeText(content, (typed) => {
         setLines((prev) => {
@@ -305,7 +298,9 @@ Type 'help' to see available commands.`;
           updated[updated.length - 1] = { type, content: typed };
           return updated;
         });
-      }).then(() => setIsTyping(false));
+      }, () => executionId !== typingIdRef.current).then(() => {
+        if (executionId === typingIdRef.current) setIsTyping(false);
+      });
     };
 
     switch (cmd) {
@@ -330,7 +325,9 @@ Type any command to explore my portfolio!`;
         break;
 
       case 'projects':
-        typeOutput(portfolioData.projects);
+        // Render HTML cards instantly (no char-by-char animation to preserve HTML integrity)
+        setIsTyping(false);
+        setLines([...baseLines, { type: 'output', content: portfolioData.projects }]);
         break;
 
       case 'skills':
@@ -354,7 +351,8 @@ Type any command to explore my portfolio!`;
         break;
 
       case 'leadership':
-        typeOutput(portfolioData.leadership);
+        setIsTyping(false);
+        setLines([...baseLines, { type: 'output', content: portfolioData.leadership }]);
         break;
 
       case 'sudo':
@@ -382,6 +380,7 @@ Type any command to explore my portfolio!`;
         break;
 
       case '':
+        setLines(baseLines);
         break;
 
       default:
@@ -445,9 +444,8 @@ Type any command to explore my portfolio!`;
               key={cmd}
               className={`px-2 py-1 sm:px-3 sm:py-1.5 ${currentTheme.text} rounded ${currentTheme.buttonHover} transition-colors duration-100 text-sm sm:text-base border ${currentTheme.buttonBorder} md:border-none`}
               onClick={() => {
-                if (!isTyping) executeCommand(cmd);
+                executeCommand(cmd);
               }}
-              disabled={isTyping}
               tabIndex={0}
               aria-label={`Run ${cmd} command`}
               style={{ minWidth: 0 }}
@@ -509,7 +507,6 @@ Type any command to explore my portfolio!`;
             className={`flex-1 bg-transparent border-none outline-none ${currentTheme.text} text-sm sm:text-base`}
             placeholder="Type a command..."
             autoFocus
-            disabled={isTyping}
             style={{ 
               caretColor: currentTheme.inputCaret
             }}
