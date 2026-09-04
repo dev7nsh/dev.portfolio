@@ -285,35 +285,26 @@ Type 'help' to see available commands.`;
   // 2. Replace 'YOUR_FORMSPREE_ID' below with your actual ID
   const FORMSPREE_ID = 'mnpqzdjn'; // ✅ formspree.io/f/mnpqzdjn
 
-  const handleDownloadClick = useCallback(async (e) => {
-    // Fire notification in background — don't block the download
-    setDownloadStatus('sending');
+  const handleDownloadClick = () => {
+    // Fire-and-forget — never blocks the PDF download
     const now = new Date();
-    try {
-      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          subject: '🔔 Someone Downloaded Your CV!',
-          message: `CV Download Alert`,
-          time: now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-          userAgent: navigator.userAgent,
-          referrer: document.referrer || 'Direct',
-          url: window.location.href,
-        }),
-      });
-      setDownloadStatus('sent');
-      setDownloadToast('📬 Notification sent to your email!');
-    } catch {
-      setDownloadStatus('idle');
-      setDownloadToast('⚠️ Notification failed — but CV is downloading.');
-    }
-    // Reset button label after 3 seconds
-    setTimeout(() => {
-      setDownloadStatus('idle');
-      setDownloadToast('');
-    }, 3000);
-  }, [FORMSPREE_ID]);
+    fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        _subject: '🔔 Someone Downloaded Your CV!',
+        message: 'CV Download Alert',
+        time: now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+        userAgent: navigator.userAgent,
+        referrer: document.referrer || 'Direct',
+        url: window.location.href,
+      }),
+    })
+      .then(() => setDownloadToast('📬 Notification sent!'))
+      .catch(() => {}); // silent fail — download still works
+    // Show toast immediately without waiting for network
+    setTimeout(() => setDownloadToast(''), 3000);
+  };
 
   const executeCommand = (command) => {
     const cmd = command.toLowerCase().trim();
