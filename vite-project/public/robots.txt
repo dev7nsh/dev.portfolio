@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://chouhandev.me/sitemap.xml
+
+# Block AI training crawlers (optional — remove if you want AI indexing)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
