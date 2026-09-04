@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Terminal as TerminalIcon, Sun, Moon } from 'lucide-react';
 
 const Terminal = ({ onThemeChange }) => {
@@ -11,6 +11,10 @@ const Terminal = ({ onThemeChange }) => {
   const inputRef = useRef(null);
   const terminalRef = useRef(null);
   const typingIdRef = useRef(0);
+
+  // ── Download CV notification state ──────────────────────────────────
+  const [downloadStatus, setDownloadStatus] = useState('idle'); // idle | sending | sent
+  const [downloadToast, setDownloadToast] = useState('');
 
   const commands = {
     help: 'Display available commands',
@@ -275,6 +279,42 @@ Type 'help' to see available commands.`;
     }
   };
 
+  // ── Download CV click handler ────────────────────────────────────────
+  // Uses Formspree (https://formspree.io) — free tier: 50 submissions/month.
+  // 1. Go to https://formspree.io/new → create a form → copy the form ID
+  // 2. Replace 'YOUR_FORMSPREE_ID' below with your actual ID
+  const FORMSPREE_ID = 'mnpqzdjn'; // ✅ formspree.io/f/mnpqzdjn
+
+  const handleDownloadClick = useCallback(async (e) => {
+    // Fire notification in background — don't block the download
+    setDownloadStatus('sending');
+    const now = new Date();
+    try {
+      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          subject: '🔔 Someone Downloaded Your CV!',
+          message: `CV Download Alert`,
+          time: now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+          userAgent: navigator.userAgent,
+          referrer: document.referrer || 'Direct',
+          url: window.location.href,
+        }),
+      });
+      setDownloadStatus('sent');
+      setDownloadToast('📬 Notification sent to your email!');
+    } catch {
+      setDownloadStatus('idle');
+      setDownloadToast('⚠️ Notification failed — but CV is downloading.');
+    }
+    // Reset button label after 3 seconds
+    setTimeout(() => {
+      setDownloadStatus('idle');
+      setDownloadToast('');
+    }, 3000);
+  }, [FORMSPREE_ID]);
+
   const executeCommand = (command) => {
     const cmd = command.toLowerCase().trim();
     
@@ -518,11 +558,36 @@ Type any command to explore my portfolio!`;
       <a
         href="devanshchouhan.pdf"
         download
+        id="download-cv-btn"
         className={`hidden md:inline fixed bottom-4 left-4 z-50 ${currentTheme.downloadBtn} font-bold py-2 px-4 rounded shadow transition-colors`}
         style={{ textDecoration: "none" }}
+        onClick={handleDownloadClick}
       >
         Download CV
       </a>
+
+      {/* Toast notification */}
+      {downloadToast && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '56px',
+            left: '16px',
+            background: isDarkTheme ? 'rgba(30,30,30,0.97)' : 'rgba(255,255,255,0.97)',
+            border: `1px solid ${isDarkTheme ? '#0e639c' : '#2563eb'}`,
+            color: isDarkTheme ? '#4ade80' : '#1d4ed8',
+            padding: '8px 14px',
+            borderRadius: '8px',
+            fontSize: '0.8rem',
+            fontFamily: 'monospace',
+            zIndex: 100,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+            animation: 'fadeInUp 0.3s ease'
+          }}
+        >
+          {downloadToast}
+        </div>
+      )}
 
       {/* Cursor blink animation */}
       <style jsx>{`
